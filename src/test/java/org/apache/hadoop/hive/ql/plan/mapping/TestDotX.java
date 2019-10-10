@@ -24,7 +24,6 @@ import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
 import org.apache.hadoop.hive.ql.DriverFactory;
 import org.apache.hadoop.hive.ql.IDriver;
 import org.apache.hadoop.hive.ql.parse.ParseException;
-import org.apache.hadoop.hive.ql.processors.CommandProcessorException;
 import org.apache.hadoop.hive.ql.processors.CommandProcessorResponse;
 import org.apache.hadoop.hive.ql.session.SessionState;
 import org.apache.hadoop.hive.ql.stats.OperatorStatsReaderHook;
@@ -79,7 +78,7 @@ public class TestDotX {
   }
 
   @Test
-  public void test1() throws ParseException, CommandProcessorException {
+  public void test1() throws ParseException {
     IDriver driver = createDriver();
     String query = "select 1 from `db.tu`";
 
