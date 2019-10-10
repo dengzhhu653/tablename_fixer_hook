@@ -1,5 +1,6 @@
 package experimental;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.antlr.runtime.ClassicToken;
@@ -16,6 +17,23 @@ import org.slf4j.LoggerFactory;
 public class FixupIncorrectUsageOfDotsInTableNames implements HiveSemanticAnalyzerHook {
 
   protected static final Logger LOG = LoggerFactory.getLogger(FixupIncorrectUsageOfDotsInTableNames.class.getName());
+  private final int HiveParser_TOK_TABNAME;
+  private final int HiveParser_Identifier;
+
+  public FixupIncorrectUsageOfDotsInTableNames() {
+    HiveParser_TOK_TABNAME = getHiveParserToken("TOK_TABNAME");
+    HiveParser_Identifier = getHiveParserToken("Identifier");
+  }
+
+  private int getHiveParserToken(String name) {
+    try {
+      Field f = HiveParser.class.getField(name);
+      Class<?> t = f.getType();
+      return f.getInt(null);
+    } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+      throw new RuntimeException("unexpected during initialziation", e);
+    }
+  }
 
   @Override
   public ASTNode preAnalyze(HiveSemanticAnalyzerHookContext context, ASTNode ast) throws SemanticException {
@@ -24,7 +42,7 @@ public class FixupIncorrectUsageOfDotsInTableNames implements HiveSemanticAnalyz
   }
 
   private void walkTree(ASTNode ast) {
-    if (ast.getType() == HiveParser.TOK_TABNAME) {
+    if (ast.getType() == HiveParser_TOK_TABNAME) {
       fixTableName(ast);
     } else {
       if (ast.getChildCount() > 0) {
@@ -44,8 +62,8 @@ public class FixupIncorrectUsageOfDotsInTableNames implements HiveSemanticAnalyz
         return;
       LOG.error("Translating invalid tableName {} to reference database: {} and table {}", str, parts[0], parts[1]);
       ast.deleteChild(0);
-      ast.addChild(new ASTNode(new ClassicToken(HiveParser.Identifier, parts[0])));
-      ast.addChild(new ASTNode(new ClassicToken(HiveParser.Identifier, parts[1])));
+      ast.addChild(new ASTNode(new ClassicToken(HiveParser_Identifier, parts[0])));
+      ast.addChild(new ASTNode(new ClassicToken(HiveParser_Identifier, parts[1])));
     }
   }
 
