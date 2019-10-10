@@ -2,6 +2,7 @@ plugins {
   id 'com.palantir.git-version' version '0.12.2'
   id 'eclipse'
   id 'application'
+  id "com.github.breadmoirai.github-release" version "2.2.9"
 }
 
 version = gitVersion()
@@ -17,4 +18,17 @@ dependencies{
 
 test {
     systemProperty "hive.root", "/home/dev/hive"
+}
+
+githubRelease {
+    token System.getenv('GITHUB_REPO_TOKEN')
+    owner "kgyrtkirk"
+    tagName project.version
+    releaseAssets jar.outputs
+}
+
+tasks.githubRelease.doFirst {
+  if(project.version.contains("dirty") || project.version.contains('-')) {
+    throw new RuntimeException("Please don't do dirty/intermediate releases " + project.version);
+  }
 }
