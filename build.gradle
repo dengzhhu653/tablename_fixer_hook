@@ -9,8 +9,12 @@ version = gitVersion()
 repositories { mavenCentral() }
 
 dependencies{
-  runtime('org.apache.hive:hive-exec:3.1.2')
-  runtime('org.apache.hive:hive-service:3.1.2')
+  compileOnly('org.apache.hive:hive-exec:3.1.2')
+  testCompile('org.apache.hive:hive-service:3.1.2')
   testCompile('org.apache.hive:hive-exec:3.1.2:tests')
   testCompile 'junit:junit:4.12'
+}
+
+test {
+    systemProperty "hive.root", "/home/dev/hive"
 }

@@ -31,12 +31,14 @@ import org.apache.hive.testutils.HiveTestEnvSetup;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
 import experimental.FixupIncorrectUsageOfDotsInTableNames;
 
+@Ignore
 public class TestDotX {
 
   @ClassRule
