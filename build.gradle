@@ -20,6 +20,10 @@ test {
     systemProperty "hive.root", "/home/dev/hive"
 }
 
+
+if(System.getenv('GITHUB_REPO_TOKEN')==null) {
+       logger.warn('You dont have GITHUB_REPO_TOKEN set => release disabled')
+}else{
 githubRelease {
     token System.getenv('GITHUB_REPO_TOKEN')
     owner "kgyrtkirk"
@@ -31,4 +35,5 @@ tasks.githubRelease.doFirst {
   if(project.version.contains("dirty") || project.version.contains('-')) {
     throw new RuntimeException("Please don't do dirty/intermediate releases " + project.version);
   }
+}
 }
