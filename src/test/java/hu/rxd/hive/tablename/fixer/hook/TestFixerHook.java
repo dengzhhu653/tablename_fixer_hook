@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.hadoop.hive.ql.plan.mapping;
+package hu.rxd.hive.tablename.fixer.hook;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -36,10 +36,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
-import experimental.FixupIncorrectUsageOfDotsInTableNames;
+import hu.rxd.hive.tablename.fixer.hook.FixupIncorrectUsageOfDotsInTableNames;
 
 @Ignore
-public class TestDotX {
+public class TestFixerHook {
 
   @ClassRule
   public static HiveTestEnvSetup env_setup = new HiveTestEnvSetup();

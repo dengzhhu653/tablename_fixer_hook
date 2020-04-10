@@ -1,4 +1,4 @@
-package experimental;
+package hu.rxd.hive.tablename.fixer.hook;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -58,8 +58,9 @@ public class FixupIncorrectUsageOfDotsInTableNames implements HiveSemanticAnalyz
       ASTNode oldChild = (ASTNode) ast.getChild(0);
       String str = oldChild.getText();
       String[] parts = str.split("\\.");
-      if (parts.length != 2)
+      if (parts.length != 2) {
         return;
+      }
       LOG.error("Translating invalid tableName {} to reference database: {} and table {}", str, parts[0], parts[1]);
       ast.deleteChild(0);
       ast.addChild(new ASTNode(new ClassicToken(HiveParser_Identifier, parts[0])));
